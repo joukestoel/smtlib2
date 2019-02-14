@@ -1,3 +1,5 @@
+(set-option :print-success true)
+
 (declare-sort State)
 
 (declare-sort Money)
@@ -148,30 +150,4 @@
 
 (check-sat)
 
-(get-value ((initialized (savingAccount S0 IBAN0)) (initialized (savingAccount S0 IBAN1))))
-
-(get-value ((step S1)))
-(get-value ((initialized (savingAccount S1 IBAN0)) (initialized (savingAccount S1 IBAN1))))
-(get-value ((intVal (balance (savingAccount S1 IBAN0))) (intVal (balance (savingAccount S1 IBAN1)))))
-
-(get-value ((step S2)))
-(get-value ((initialized (savingAccount S2 IBAN0)) (initialized (savingAccount S2 IBAN1))))
-(get-value ((intVal (balance (savingAccount S2 IBAN0))) (intVal (balance (savingAccount S2 IBAN1)))))
-
-(get-value ((step S3)))
-(get-value ((initialized (savingAccount S3 IBAN0)) (initialized (savingAccount S3 IBAN1))))
-(get-value ((intVal (balance (savingAccount S3 IBAN0))) (intVal (balance (savingAccount S3 IBAN1)))))
-
-(get-value ((step S4)))
-(get-value ((initialized (savingAccount S4 IBAN0)) (initialized (savingAccount S4 IBAN1))))
-(get-value ((intVal (balance (savingAccount S4 IBAN0))) (intVal (balance (savingAccount S4 IBAN1)))))
-
-;(get-model)
-
-;(get-value ((initialized (savingAccount S0)) (initialized (savingAccount S1)) (initialized (savingAccount S2)) (initialized (savingAccount S3))))
-;(get-value ((intVal (balance (savingAccount S1))) (step S1)))
-;(get-value ((intVal (balance (savingAccount S2))) (step S2)))
-;(get-value ((intVal (balance (savingAccount S3))) (step S3)))
-;(get-value ((id (savingAccount S1)) (id (savingAccount S2)) (id (savingAccount S3))))
-;
-;(get-value ((intVal M0) (intVal M1) (intVal M2) (intVal M3)))
+(get-model)

@@ -24,7 +24,7 @@ void main() {
 	LangDescription desc = <"SMT2-Lib", "smt2">;
 	registerLanguage(desc.name, desc.ext, parseSmt2);
 	
-	Script lastParsedTree = (Script)``;
+	Script lastParsedTree = (Script)``; 
 	
 	contribs = {
 		annotator(&T<:Tree (&T<:Tree scripts) {  

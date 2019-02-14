@@ -78,10 +78,10 @@ syntax Sort = @category="Type" \int:	"Int";
 
 syntax Formula
 	= neg:	"(" "-" Formula val ")"
-	| sub:	"(" "-" Formula lhs Formula+ lhs ")"
-	| add:	"(" "+" Formula lhs Formula+ rhs ")"
-	| mul:	"(" "*" Formula lhs Formula+ rhs ")"
-	| div:	"(" "div" Formula lhs Formula+ rhs ")"
+	| sub:	"(" "-" Formula lhs Formula+ lhss ")"
+	| add:	"(" "+" Formula lhs Formula+ rhss ")"
+	| mul:	"(" "*" Formula lhs Formula+ rhss ")"
+	| div:	"(" "div" Formula lhs Formula+ rhss ")"
 	| \mod:	"(" "%" Formula lhs Formula rhs ")"
 	| abs:	"(" "abs" Formula term ")"
 	| lte:	"(" "\<=" Formula lhs Formula rhs ")"
@@ -101,7 +101,7 @@ syntax Sort = @category="Type" \real: "Real";
 syntax Literal = realVal: Real r;
 
 syntax Formula
-	= realDiv: "(" "/" Formula lhs Formula+ rhs ")"
+	= realDiv: "(" "/" Formula lhs Formula+ rhss ")"
 	// others are already defined in the theory of integer numbers
 	; 
 
@@ -113,7 +113,7 @@ syntax Sort
 	= @category="Type" bitVec: 		"(" "_" "BitVec" Int size ")"
 	;
 
-syntax Formula = bitVecConst:	"(" "_" "bv" Int val Int size ")";
+syntax Formula = bitVecConst:	"(" "_" "bv" Int intVal Int size ")";
 
 syntax Formula
 	= bvadd:	"(" "bvadd" Formula lhs Formula rhs ")"
@@ -178,6 +178,13 @@ syntax Constructor
 	;
 // End of syntax for Algabraic Data Types
 
+// Syntax for the theory of String
+syntax Sort = @category="Type" string: "String";
+
+syntax Literal
+  = @category="Constant" strConst: String strVal   
+  ;
+
 
 syntax Logic 
 	= horn:		"HORN"
@@ -206,6 +213,12 @@ syntax Attribute
 	| @fences=<2,4> pattern:	":" "pattern" "(" Formula* terms ")"
 	;
 
+lexical UnicodeEscape
+    = utf16: "\\" [u] [0-9 A-F a-f] [0-9 A-F a-f] [0-9 A-F a-f] [0-9 A-F a-f] 
+    | utf32: "\\" [U] (("0" [0-9 A-F a-f]) | "10") [0-9 A-F a-f] [0-9 A-F a-f] [0-9 A-F a-f] [0-9 A-F a-f] // 24 bits 
+    | ascii: "\\" [a] [0-7] [0-9A-Fa-f]
+    ;
+
 lexical Int = [0-9] !<< [0-9]+ !>> [0-9];
 lexical Real = [0-9] !<< [0-9]+ [.] [0-9]+ !>> [0-9];
 
@@ -213,8 +226,8 @@ lexical Hex = "#" "x" [0-9 a-f]+;
 lexical Bin = "#" "b" [0-1]+;
 lexical String = "\"" ![\"]* "\"";
 
-lexical Id = ([a-z A-Z 0-9 _.] !<< [a-z A-Z _][a-z A-Z 0-9 _.]* !>> [a-z A-Z 0-9 _.]) \ Keywords;
-lexical SortId = ([a-z A-Z 0-9 _] !<< [A-Z _][a-z A-Z 0-9 _]* !>> [a-z A-Z 0-9 _]) \ Keywords;
+lexical Id = ([a-z A-Z 0-9 _.] !<< [a-zA-Z_][a-zA-Z0-9_.]* !>> [a-z A-Z 0-9 _.]) \ Keywords;
+lexical SortId = ([a-z A-Z 0-9 _.] !<< [a-zA-Z_][a-zA-Z0-9_.]* !>> [a-z A-Z 0-9 _.]) \ Keywords;
 
 lexical Boolean = "true" | "false";
 
@@ -230,7 +243,7 @@ lexical WhitespaceOrComment
   
 lexical Comment = @lineComment @category="Comment" ";" ![\n\r]* $;
 
-keyword Keywords = "Int" | "Bool" | "Array" | "Real" | "BitVec" | "bv" | "_" | "set-logic" | "set-option" | "set-info" | "declare-sort" |
+keyword Keywords = "Int" | "Bool" | "Array" | "Real" | "BitVec" | "String" | "bv" | "_" | "set-logic" | "set-option" | "set-info" | "declare-sort" |
 	"define-sort" | "declare-const" | "declare-fun" | "define-fun" | "check-sat" | "get-value" | "declare-datatypes" | "as" |
 	"get-unsat-core" | "get-model" | "push" | "pop" | "exit" | "sat" | "unsat" | "unknown" | "true" | "false" |
 	"select" | "store" | "and" | "or" | "not" | "xor" | "abs" | "distinct" | "ite" | "model" | "let" | "as" |
